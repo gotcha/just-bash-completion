@@ -28,28 +28,28 @@ _just_completions()
   fi
 
   case "$prev" in
-    --color*)
+    --color )
      COMPREPLY=( $( compgen -W 'auto always never' "$cur"));
      return 0;;
-    -d|--working-directory*)
+    -d|--working-directory )
      _filedir -d
      return 0;;
-    -f|--justfile*)
+    -f|--justfile )
      _filedir
      return 0;;
-    -s|--show*)
+    -s|--show )
      COMPREPLY=($(compgen -W "$recipes" "$cur"));
      return 0;;
-    --set|--shell-arg*)
+    --set|--shell-arg )
      COMPREPLY=();
      return 0;;
-    --shell*)
+    --shell )
      COMPREPLY=( $( compgen -c "$cur"));
      return 0;;
   esac
 
   case "$cur" in
-    --*)
+    --* )
     COMPREPLY=( $( compgen -W '--edit --summary --version --verbose \
                                --dry-run --dump --clear-shell-args \
                                --evaluate --highlight --init --list \
@@ -57,7 +57,7 @@ _just_completions()
                                --justfile --set --shell --shell-arg \
                                --show --working-directory \
                               ' -- $cur ) );;
-    -*)
+    -* )
     COMPREPLY=( $( compgen -W '-e -l -q -v -h -V -f -s -d -- \
                               ' -- $cur ) );;
     *)
