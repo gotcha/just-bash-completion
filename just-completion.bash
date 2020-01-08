@@ -2,6 +2,10 @@
 _just_completions()
 {
   local cur
+  local prev
+  local pprev
+  local justfile
+  local recipes
 
   COMPREPLY=()   # Array variable storing the possible completions.
   cur=${COMP_WORDS[COMP_CWORD]}
@@ -12,7 +16,15 @@ _just_completions()
       --set*)
        COMPREPLY=();
        return 0;;
+      -f|--justfile*)
+       justfile="${prev/#\~/$HOME}";
     esac
+  fi
+
+  if test -z "$justfile"; then
+     recipes=$(just --summary 2> /dev/null || true)
+  else
+     recipes=$(just --justfile "$justfile" --summary)
   fi
 
   case "$prev" in
@@ -26,7 +38,7 @@ _just_completions()
      COMPREPLY=( $( compgen -f "$cur"));
      return 0;;
     -s|--show*)
-     COMPREPLY=($(compgen -W "$(just --summary)" "$cur"));
+     COMPREPLY=($(compgen -W "$recipes" "$cur"));
      return 0;;
     --set|--shell-arg*)
      COMPREPLY=();
@@ -49,7 +61,7 @@ _just_completions()
     COMPREPLY=( $( compgen -W '-e -l -q -v -h -V -f -s -d -- \
                               ' -- $cur ) );;
     *)
-    COMPREPLY=($(compgen -W "$(just --summary)" "$cur"));;
+    COMPREPLY=($(compgen -W "$recipes" "$cur"));;
   esac
 
   return 0
