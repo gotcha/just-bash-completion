@@ -32,10 +32,10 @@ _just_completions()
      COMPREPLY=( $( compgen -W 'auto always never' "$cur"));
      return 0;;
     -d|--working-directory*)
-     COMPREPLY=( $( compgen -d "$cur"));
+     _filedir -d
      return 0;;
     -f|--justfile*)
-     COMPREPLY=( $( compgen -f "$cur"));
+     _filedir
      return 0;;
     -s|--show*)
      COMPREPLY=($(compgen -W "$recipes" "$cur"));
